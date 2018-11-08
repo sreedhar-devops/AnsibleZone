@@ -1,0 +1,83 @@
+---
+  - hosts: all
+    become: yes
+    
+    tasks: 
+    - name: update all packages
+      apt:
+        update_cache: yes
+
+# installing nodejs app from https://www.digitalocean.com/community/tutorials/how-to-set-up-a-node-js-application-for-production-on-ubuntu-18-04
+  - hosts: app
+    become: yes
+    vars:
+      hostname: "{{ansible_all_ipv4_addresses| ipaddr('address')|first}}"
+      port: 3000
+      folder_path: /home/Ansible/NodJSinstDir
+    tasks: 
+    
+    - name: Create folder for nodejs installation
+      file: 
+        path: "{{folder_path}}"
+        state: directory
+        mode: 0755
+
+    - name: Retrieve the installation script for the Node.js 8.x archives 
+      get_url: 
+        url: https://deb.nodesource.com/setup_8.x
+        dest: "{{folder_path}}/nodesource_setup.sh"
+        mode: 0744
+
+    - name: Run the downloaded nodesource_setup.sh script to install the NodeSource PPA
+      shell: bash "{{folder_path}}/nodesource_setup.sh"
+    
+    - name: Install nodejs application
+      apt:
+        name: nodejs
+        state: present
+
+    - name: Install build-essential In order for some npm packages to work
+      apt: 
+        name: build-essential
+        state: present
+
+    - name: Copying hello.js to app server using template module and jinja2 concept to create nodejs application
+      template:
+        src: templates/hello.js.j2
+        dest: "{{folder_path}}/hello.js"
+
+    - name: Installing PM2 module using npm module,  PM2 makes it possible to daemonize applications so that they will run in the background as a service.
+      npm:
+        name: pm2@latest
+        global: yes
+        state: present
+
+    - name: Starting hello.js to run in background using pm2 command
+      shell: pm2 start "{{folder_path}}/hello.js"
+
+# Installing nginx reverse proxysql_backend_servers
+  - hosts: web
+    become: yes
+    vars:
+      port: 3000
+
+    tasks:
+    - name: install nginx as reverse proxy
+      apt:
+        name: nginx
+        state: present
+    - name: copy default.j2 to nginx server to link nodejs app with reverse proxy
+      template:
+        src: templates/default.j2
+        dest: /etc/nginx/sites-available/default
+      notify: "restart web service"
+
+    handlers: 
+    - name: restart nginx web service
+      service:
+        name: nginx
+        state: restarted
+      listen: "restart web service"
+
+
+

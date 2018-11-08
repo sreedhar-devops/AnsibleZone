@@ -1,0 +1,13 @@
+- name: this is an example for command
+  hosts: all
+  become: yes
+  become_method: su
+  become_user: root
+  become_pass: root
+  tasks:
+  - command: touch /home/Ansible/one.txt
+  - command: sudo `echo "Sreedhar wait until delivery happens" >> /home/Ansible/one.txt`
+  - command: cat /home/Ansible/one.txt
+    register: output
+  - debug:
+          msg: "{{output.stdout_lines}}"

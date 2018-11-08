@@ -1,0 +1,11 @@
+---
+  - hosts: all
+    become: yes
+    tasks:
+      - apt:
+        update_cache: yes
+  - hosts: app
+    become: yes
+    tasks:
+      
+        

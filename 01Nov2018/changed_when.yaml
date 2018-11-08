@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: capturing service running status of web server on ubuntu os
+    shell: service nginx status|grep -i Active|awk '{print $3}'
+    register: servicestatus
+  - name: starting web service and observing changed status of ansible
+    service: 
+      name: "{{package_name}}"
+      state: started
+      changed_when: "'(running)' not in servicestatus.stdout"

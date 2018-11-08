@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: yes
+  vars: 
+    package_name: nginx
+  tasks: 
+  - name: start service
+    service: 
+      name: 
+      stae: absent
+    when:
+  - name: installing web server
+    package:
+      name: "{{}}"
+      state: absent
+      
+  - name: purging files for debian-ubuntu packages
+    apt:
+      name:
+      purge:
+      autoremove: yes
+ 
+
+  

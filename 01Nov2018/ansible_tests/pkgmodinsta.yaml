@@ -1,0 +1,10 @@
+---
+- hosts: all
+  become: yes
+  vars: 
+    package_name: nginx
+  tasks: 
+  - name: installing web server
+    package:
+      name: "{{package_name}}"
+      state: present

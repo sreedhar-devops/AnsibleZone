@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  vars: 
+    package_name: "nginx nginx-common"
+  tasks: 
+  - name: stop the service
+    service:
+      name: "{{package_name}}"
+      state: stopped
+  - name: installing web server
+    package:
+      name: "{{package_name}}"
+      purge: yes
+  - name: installing web server
+    package:
+      autoremove: yes

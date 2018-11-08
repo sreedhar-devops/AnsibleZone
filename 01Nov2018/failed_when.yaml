@@ -1,0 +1,12 @@
+----
+- hosts: all
+  become: yes
+  tasks:
+  - name: checking failed_when condition on root file system having less than 5 GB
+    shell:  df -h /|grep -v Filesystem|awk '{print $4}'|cut -d G -f1
+    register: rootFsSpace
+    failed_when: "rootFsSpace.stdout|float < 4"
+  - name: checking failed_when condition on total memory having lessthan 2 GB
+    shell:  cat /proc/meminfo|grep -i memtotal|awk '{print $2/1024/1024}'
+    register: memoutput
+    failed_when: "memoutput.stdout|float < 2"

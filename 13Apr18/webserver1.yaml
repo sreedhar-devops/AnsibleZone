@@ -1,0 +1,9 @@
+---
+- hosts: 
+  become: yes 
+  vars:
+    package_name: 
+  tasks:
+  - package:
+      name: "{{package_name}}"
+      state: 

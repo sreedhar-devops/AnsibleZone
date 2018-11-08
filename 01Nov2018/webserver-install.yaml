@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: yes
+  vars: 
+    package_name: nginx
+  tasks: 
+  - name: installing web server
+    package:
+      name: "{{}}"
+      state: present
+  - name: start service
+    service: 
+      name: 
+      stae: 
+    when:
+
+  

@@ -1,0 +1,14 @@
+---
+- name: install apache2 on node1 group servers
+  hosts: node1
+  become: yes
+  tasks:
+  - name: install apache2 
+    apt:
+      name: apache2
+      state: present
+  - name: stop apache2 service
+    service: 
+      name: apache2
+      state: stopped
+

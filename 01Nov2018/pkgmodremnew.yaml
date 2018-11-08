@@ -1,0 +1,22 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    name1: nginx
+    name2: nginx-common
+  tasks:
+  - name: stop the service
+    service:
+      name: "{{name1}}"
+      state: stopped
+  - name: removing nginx
+    apt:
+            name: "[u'{{name1}}', u'{{name2}}']"
+            state: absent
+  - name: purging nginx
+    apt:
+      name: "[u'{{name1}}', u'{{name2}}']"
+      purge: yes
+  - name: autoremoving packages
+    apt:
+      autoremove: yes
