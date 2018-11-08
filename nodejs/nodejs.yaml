@@ -61,6 +61,14 @@
       debug: 
         msg: "{{pm2deletestatus}}"
 
+    - name: Getting output of pm2 status command
+      command: pm2 status
+      register: pm2status1
+
+    - name: Displaying output of pm2status1
+      debug: 
+        msg: "{{pm2status1}}"
+
     - name: Starting hello.js to run in background using pm2 command
       command: pm2 start -f "{{folder_path}}/hello.js" 
       args:
@@ -70,7 +78,15 @@
     - name: Output of command pm2 start
       debug: 
         msg: "{{pm2startoutput}}"
-        
+
+    - name: Getting output of pm2 status command
+      command: pm2 status
+      register: pm2status2
+
+    - name: Displaying output of pm2status2
+      debug: 
+        msg: "{{pm2status2}}"
+
 # Installing nginx reverse proxysql_backend_servers
   - hosts: web
     become: yes
