@@ -92,7 +92,7 @@
     become: yes
     vars:
       port: 3000
-
+      
     tasks:
     - name: install nginx as reverse proxy
       apt:
