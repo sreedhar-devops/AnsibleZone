@@ -53,7 +53,7 @@
         state: present
 
     - name: Starting hello.js to run in background using pm2 command
-      command: pm2 start "{{folder_path}}/hello.js"
+      command: pm2 start -f "{{folder_path}}/hello.js"
 
 # Installing nginx reverse proxysql_backend_servers
   - hosts: web
