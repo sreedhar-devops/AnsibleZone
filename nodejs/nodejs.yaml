@@ -54,13 +54,23 @@
 
     -  name: delete existing pm2 processes if running
        command: pm2 delete all
+       register: pm2deletestatus
        ignore_errors: True
 
+    - name: Output of command pm2 delete all
+      debug: 
+        msg: "{{pm2deletestatus}}"
+
     - name: Starting hello.js to run in background using pm2 command
-      command: pm2 start -f "{{folder_path}}/hello.js" --name hello1.js
+      command: pm2 start -f "{{folder_path}}/hello.js" 
       args:
         chdir: "{{folder_path}}"
+      register: pm2startoutput
 
+    - name: Output of command pm2 start
+      debug: 
+        msg: "{{pm2startoutput}}"
+        
 # Installing nginx reverse proxysql_backend_servers
   - hosts: web
     become: yes
