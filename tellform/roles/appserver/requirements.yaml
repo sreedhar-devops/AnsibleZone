@@ -1,0 +1,5 @@
+# from galaxy for redis server
+- src: geerlingguy.redis
+
+# from galaxy for mongo db
+- src: simplifield.mongo

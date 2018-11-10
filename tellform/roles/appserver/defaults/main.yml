@@ -1,2 +1,5 @@
 ---
 # defaults file for appserver
+hostname: "{{ansible_all_ipv4_addresses| ipaddr('address')|first}}"
+port: 3000
+folder_path: /home/Ansible/NodJSinstDir

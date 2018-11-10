@@ -1,2 +1,12 @@
 ---
 # tasks file for webserver
+- name: install nginx as reverse proxy
+  apt:
+    name: nginx
+    state: present
+
+- name: copy default.j2 to nginx server to link nodejs app with reverse proxy
+  template:
+    src: templates/default.j2
+    dest: /etc/nginx/sites-available/default
+    notify: "restart web service"
