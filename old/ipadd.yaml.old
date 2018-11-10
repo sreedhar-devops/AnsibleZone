@@ -1,0 +1,11 @@
+--- 
+- 
+  become: true
+  hosts: all
+  tasks:
+  - 
+    debug: 
+      msg: "{{ansible_all_ipv4_addresses| ipaddr('address')|unique|first }}"
+
+
+

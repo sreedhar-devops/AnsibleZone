@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: yes
+  tasks: 
+  - name: stop the service
+    service:
+      name: "{{package_name}}"
+      state: stopped
+  - name: remove web-app from Debian family
+    apt:
+      name: "{{package_name}}"
+      state: absent
+      purge: yes
+    when: ansible_os_family == "Debian"
+  - name: auto-remove all dependencies of debian family
+    apt:
+      autoremove: yes
+    when: ansible_os_family == "Debian"
+  - name: remove web-app from RedHat family
+    yum:
+      name: "{{package_name}}"
+      state: removed
+    when: ansible_os_family == "RedHat"
+  - name: auto-remove all dependencies of RedHat family
+    yum:
+      autoremove: yes
+    when: ansible_os_family == "RedHat"
+

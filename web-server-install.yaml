@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: yes
+  tasks: 
+  - name: update the cache and install web server on Debian family
+    apt:
+      update_cache: yes
+      name: "{{package_name}}"
+      state: present
+    when: ansible_os_family == "Debian"
+
+  - name: update the cache and install install web server on  RedHat family
+    yum:
+      update_cache: yes
+      name: "{{package_name}}"
+      state: present
+    when: ansible_os_family == "RedHat"
+ 
+  - name: start service
+    service: 
+      name: "{{package_name}}"
+      state: started
+    
+
+  
