@@ -9,4 +9,4 @@
   template:
     src: templates/default.j2
     dest: /etc/nginx/sites-available/default
-    notify: "restart web service"
+  notify: "restart web service"
